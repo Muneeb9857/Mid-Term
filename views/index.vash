@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta />
+    <title>@model.title</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <!-- <link rel='stylesheet' href='/stylesheets/tpl_style.css' /> -->
+
+    <!-- 
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" /> -->
+    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="/bootstrap/js/bootstrap.min.js"
+    ></script>
+  </head>
+
+  <body>
+    <nav
+      class="navbar navbar-light justify-content-between"
+      style="background-color: #e3f2fd"
+    >
+      <div class="col hdr">
+        <input
+          class="form-control pbk"
+          type="text"
+          id="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </div>
+      <div class="col hdr" style="text-align: right">
+        <a href="#!" class="navbar-brand" id="issue">Issue</a>
+        <a href="#!" class="navbar-brand link"
+          >Store(<span id="cartLength">0</span>)</a
+        >
+      </div>
+    </nav>
+
+    <table style="width: 100%">
+      <tbody>
+        <tr>
+          <td style="width: 85%; vertical-align: top">
+            <div class="scrollable">
+              <div class="items" id="items"></div>
+            </div>
+          </td>
+          <td style="vertical-align: top; text-align: center">
+            <div id="store">
+              <div style="padding: 10px; font-size: 20px">
+                Amount:<span id="totalAmount">0</span>
+              </div>
+
+              <div id="storeContainer"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+      const API = "http://localhost:3000/api";
+
+      let cart = [];
+
+      getAllTitles();
+
+      $("#search").keypress(function (e) {
+        if (e.which === 13) {
+          searchTitles($("#search").val());
+        }
+      });
+
+      $("body").on("click", ".title", function () {
+        let tid = $(this).attr("tid");
+        let rent = $(this).attr("rent");
+        let image = $(this).children("img").first().attr("src");
+
+        if (!cart.find((item) => item.tid == tid)) {
+          cart.push({
+            tid,
+            rent,
+            image,
+            discount: 0,
+          });
+        }
+
+        renderCart();
+      });
+
+      $("body").on("change", ".discount", function () {
+        let value = $(this).val();
+        let cartIndex = $(this).attr("cartIndex");
+
+        cart[cartIndex].discount = value;
+
+        renderCart();
+      });
+
+      $("#issue").click(function () {
+        const url = `${API}/title/issue`;
+        $.ajax({
+          url: url,
+          type: "POST",
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          data: JSON.stringify({ cart }),
+        }).done(function (response) {
+          cart = [];
+          if ($("#search").val().length) {
+            searchTitles($("#search").val());
+          } else {
+            getAllTitles();
+          }
+          renderCart();
+        });
+      });
+
+      function getAllTitles() {
+        console.log("getAllTitles");
+        const url = `${API}/title/all`;
+        $.ajax({
+          type: "GET",
+          url: url,
+        }).done(function (titles) {
+          console.log("All Titles:", titles.length);
+          renderTitle(titles);
+        });
+      }
+
+      function searchTitles(search) {
+        console.log("search", search);
+        const url = `${API}/title/${search}`;
+        $.ajax({
+          type: "GET",
+          url: url,
+        }).done(function (titles) {
+          renderTitle(titles);
+        });
+      }
+
+      function renderTitle(titles) {
+        $("#items").empty();
+
+        titles.map((title) => {
+          const titleDiv = `
+				<a
+					href="#!"
+					title="${title.title}"
+					tid="${title.tid}"
+					rent="${title.rent}"
+					class="title"
+					rented="${title.rented}"
+				>
+					<img
+						width="194px"
+						height="252px"
+						src="images/${title.image}"
+					/>
+					${title.rented ? '<div class="item-status">Issued</div>' : ""}
+					<div class="item-title">
+						${title.title}
+						<br />
+						<span class="textWhite">Movie</span>
+					</div>
+				</a>
+			`;
+
+          $("#items").append(titleDiv);
+        });
+      }
+
+      function renderCart() {
+        $("#storeContainer").empty();
+        let totalAmount = 0;
+
+        cart.map((item, index) => {
+          let itemAmount = item.rent - item.rent * (item.discount / 100);
+          totalAmount += itemAmount;
+          const cartItem = `
+				<div class="store" style="margin-bottom: 5px;">
+					<img
+						src="${item.image}"
+						height="150px"
+						title=""
+					/>
+					<br />
+					<input
+						type="number"
+						class="discount"
+						name="discount"
+						tid="${item.tid}"
+						cartIndex="${index}"
+						value="${item.discount}"
+						style="width: 35px"
+						min="0"
+						max="100"
+					/>
+					<span>Rent : </span>
+					<span class="rent" id="r-${item.tid}" style="width: 35px">${itemAmount}</span>
+				</div>
+			`;
+
+          $("#storeContainer").append(cartItem);
+        });
+        $("#totalAmount").html(totalAmount);
+        $("#cartLength").html(cart.length);
+      }
+    </script>
+  </body>
+</html>

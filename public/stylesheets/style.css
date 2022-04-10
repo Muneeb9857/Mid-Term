@@ -1,0 +1,141 @@
+nav{
+  justify-content: space-between!important;
+}
+.col{
+  display: inline-block;
+}
+.hdr{
+  width: 48%;
+  padding: 10px;
+}
+.form-control {
+  display: block;
+  /* width: 100%; */
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.navbar-light .navbar-brand {
+    color: rgba(0,0,0,.9);
+}
+.navbar-brand {
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.scrollable .next .arrow-right {
+  background: url(../images/arrow.png) -18px no-repeat;
+  width: 18px;
+  height: 24px;
+  display: block
+}
+
+.scrollable .items {
+  /* width: 20000em; */
+  position: absolute
+}
+
+.scrollable .items a {
+  position: relative
+}
+
+.scrollable .items a:hover {
+  color: #46e1ff
+}
+
+.scrollable .items .item-status {
+  position: absolute;
+  left: 25px;
+  top: 60px;
+  /* width: 184px;
+  height: 54px; */
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  text-align: center;
+  font-weight: 700;
+  font-size: 34pt;
+  color: red;
+  transform: rotate(30deg);
+  transform-origin: center;
+  border-radius: 15px;
+}
+a {
+  color: #ecc835;
+  text-decoration: none;
+  outline: medium
+}
+
+.scrollable .items .item-title {
+  position: absolute;
+  left: 1px;
+  bottom: 1px;
+  width: 184px;
+  height: 54px;
+  padding: 5px;
+  background: rgba(0,0,0,.7);
+  overflow: hidden;
+  text-align: left;
+  font-weight: 700
+}
+
+.items div {
+  float: left
+}
+
+div.items a {
+  display: block;
+  float: left;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  width: 194px;
+  height: 254px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer
+}
+
+div.items img {
+  border: 1px solid #313031
+}
+
+.scrollable_content {
+  width: 100%
+}
+
+.scrollable_title {
+  float: left;
+  font: normal 17px/23px "Tahoma",Arial,Helvetica,sans-serif;
+  letter-spacing: -1px;
+  color: #fff;
+  height: 25px
+}
+
+.scrollable {
+  position: relative;
+  /* overflow: hidden; */
+  width: 100%;
+  height: 254px
+}
+.textWhite {
+  color: #fff
+}
+
+a:hover {
+  color: #fff;
+  text-decoration: none
+}
